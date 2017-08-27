@@ -24,20 +24,6 @@ namespace RStein.AsyncNf4
       NO_ARGS = new object[0];
     }
 
-    private static void setUnobserverdHandler()
-    {
-      //dirty
-      TaskScheduler.UnobservedTaskException += (sender, ex) =>
-      {
-        if (!ex.Observed)
-        {
-          Debug.WriteLine(ex);
-        }
-
-        ex.SetObserved();
-      };
-    }
-
     public static TaskAwaiter GetAwaiter(this Task task)
     {
       return new TaskAwaiter(task);
@@ -104,6 +90,20 @@ namespace RStein.AsyncNf4
       throw toThrowException;
     }
 
+    private static void setUnobserverdHandler()
+    {
+      //dirty
+      TaskScheduler.UnobservedTaskException += (sender, ex) =>
+      {
+        if (!ex.Observed)
+        {
+          Debug.WriteLine(ex);
+        }
+
+        ex.SetObserved();
+      };
+    }
+
     //Hack, Reactive extension do something similar
     private static MethodInfo TryGetExceptionPreserveStackMethodInfo()
     {
@@ -149,9 +149,9 @@ namespace RStein.AsyncNf4
 
 public class TaskAwaiter : ICriticalNotifyCompletion
 {
+  private readonly bool _continueOnCapturedContext;
   private readonly Task _task;
   private ContextsContinuationTriad _continuationTriad;
-  private readonly bool _continueOnCapturedContext;
 
   internal TaskAwaiter(Task task, bool continueOnCapturedContext = true)
   {
@@ -184,11 +184,6 @@ public class TaskAwaiter : ICriticalNotifyCompletion
     }
   }
 
-  public TaskAwaiter GetAwaiter()
-  {
-    return this;
-  }
-
   public void OnCompleted(Action continuation)
   {
     ContinuationTriad = CaptureContext(continuation);
@@ -204,6 +199,11 @@ public class TaskAwaiter : ICriticalNotifyCompletion
     {
       OnCompletedCommon(_task, PreserveOldSyncContextContinuation, _continueOnCapturedContext);
     }
+  }
+
+  public TaskAwaiter GetAwaiter()
+  {
+    return this;
   }
 
   [SecuritySafeCritical]
@@ -277,8 +277,8 @@ public class TaskAwaiter : ICriticalNotifyCompletion
 
 public class TaskAwaiter<T> : ICriticalNotifyCompletion
 {
-  private readonly Task<T> _task;
   private readonly bool _continueOnCapturedContext;
+  private readonly Task<T> _task;
   private ContextsContinuationTriad _continuationTriad;
 
 
@@ -312,11 +312,6 @@ public class TaskAwaiter<T> : ICriticalNotifyCompletion
     }
   }
 
-  public TaskAwaiter<T> GetAwaiter()
-  {
-    return this;
-  }
-
   public void OnCompleted(Action continuation)
   {
      ContinuationTriad = TaskAwaiter.CaptureContext(continuation);
@@ -331,6 +326,11 @@ public class TaskAwaiter<T> : ICriticalNotifyCompletion
     {
       TaskAwaiter.OnCompletedCommon(_task, PreserveOldSyncContextContinuation, _continueOnCapturedContext);
     }
+  }
+
+  public TaskAwaiter<T> GetAwaiter()
+  {
+    return this;
   }
 
   public T GetResult()
