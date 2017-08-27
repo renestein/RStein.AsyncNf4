@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RStein.AsyncNf4", "RStein.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RStein.AsyncNf4.Test", "RStein.AsyncNf4.Test\RStein.AsyncNf4.Test.csproj", "{34965FBE-B6CE-48E2-B2C2-9F17AEB02C6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormtaskTester", "WinFormtaskTester\WinFormtaskTester.csproj", "{89BA20CE-9574-4B0D-9DED-68D0A494C5BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{34965FBE-B6CE-48E2-B2C2-9F17AEB02C6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34965FBE-B6CE-48E2-B2C2-9F17AEB02C6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34965FBE-B6CE-48E2-B2C2-9F17AEB02C6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89BA20CE-9574-4B0D-9DED-68D0A494C5BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89BA20CE-9574-4B0D-9DED-68D0A494C5BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89BA20CE-9574-4B0D-9DED-68D0A494C5BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89BA20CE-9574-4B0D-9DED-68D0A494C5BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

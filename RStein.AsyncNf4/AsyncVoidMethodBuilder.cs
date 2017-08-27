@@ -1,4 +1,5 @@
 using System.Threading;
+using RStein.AsyncNf4;
 
 namespace System.Runtime.CompilerServices
 {
@@ -19,12 +20,14 @@ namespace System.Runtime.CompilerServices
 
     public void SetException(Exception exception)
     {
+      exception.PreserveExceptionStack();
       if (SynchContext != null)
       {
         SynchContext.Post(_ => throw exception, null);
+        return;
       }
 
-      throw exception;
+      throw  exception;
     }
 
     public void SetResult()

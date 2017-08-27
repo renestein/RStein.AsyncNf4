@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Win32.SafeHandles;
 using RStein.AsyncNf4;
 
 namespace RStein.AsyncNf4
@@ -315,8 +314,9 @@ public class TaskAwaiter<T> : ICriticalNotifyCompletion
     ContinuationTriad = TaskAwaiter.CaptureContext(continuation);
 
     using (var asyncFlowControl = ExecutionContext.SuppressFlow())
-
+    {
       TaskAwaiter.OnCompletedCommon(_task, PreserveOldSyncContextContinuation, _continueOnCapturedContext);
+    }
   }
 
   public T GetResult()
