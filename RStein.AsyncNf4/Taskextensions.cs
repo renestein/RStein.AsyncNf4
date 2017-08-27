@@ -252,11 +252,11 @@ public class TaskAwaiter : ICriticalNotifyCompletion
   {
     if (task == null)
     {
-      throw new ArgumentNullException(nameof(task));
+      throw new ArgumentNullException("task");
     }
     if (continuation == null)
     {
-      throw new ArgumentNullException(nameof(continuation));
+      throw new ArgumentNullException("continuation");
     }
 
 
