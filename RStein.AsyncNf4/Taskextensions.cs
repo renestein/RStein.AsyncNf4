@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Win32.SafeHandles;
 using RStein.AsyncNf4;
 
 namespace RStein.AsyncNf4
@@ -139,8 +140,13 @@ public class TaskAwaiter : ICriticalNotifyCompletion
   private ContextsContinuationTriad _continuationTriad;
   private readonly bool _continueOnCapturedContext;
 
-  internal TaskAwaiter(Task task, bool continueOnCapturedContext = false)
+  internal TaskAwaiter(Task task, bool continueOnCapturedContext = true)
   {
+    if (task == null)
+    {
+      throw new ArgumentNullException("task");
+    }
+
     _task = task;
     _continueOnCapturedContext = continueOnCapturedContext;
   }
@@ -165,6 +171,11 @@ public class TaskAwaiter : ICriticalNotifyCompletion
     }
   }
 
+  public TaskAwaiter GetAwaiter()
+  {
+    return this;
+  }
+
   public void OnCompleted(Action continuation)
   {
     ContinuationTriad = CaptureContext(continuation);
@@ -174,7 +185,7 @@ public class TaskAwaiter : ICriticalNotifyCompletion
   [SecuritySafeCritical]
   public void UnsafeOnCompleted(Action continuation)
   {
-    CaptureContext(continuation);
+    ContinuationTriad = CaptureContext(continuation);
 
     using (var asyncFlowControl = ExecutionContext.SuppressFlow())
     {
@@ -227,7 +238,7 @@ public class TaskAwaiter : ICriticalNotifyCompletion
     ExecutionContext.Run(executionContextCopy, preserveOldSynchronizationContextForContinuation, contextTriad);
   }
 
-  internal static void OnCompletedCommon(Task task, Action continuation, bool usesynchContext)
+  internal static void OnCompletedCommon(Task task, Action continuation, bool useSynchContext)
   {
     if (task == null)
     {
@@ -239,9 +250,9 @@ public class TaskAwaiter : ICriticalNotifyCompletion
     }
 
 
-    var currentScheduler = usesynchContext
-      ? TaskScheduler.Default
-      : TaskScheduler.FromCurrentSynchronizationContext();
+    var currentScheduler = useSynchContext && SynchronizationContext.Current != null
+      ? TaskScheduler.FromCurrentSynchronizationContext()
+      : TaskScheduler.Default;
                   
     task.ContinueWith(completedTask =>
     {
@@ -258,8 +269,12 @@ public class TaskAwaiter<T> : ICriticalNotifyCompletion
   private ContextsContinuationTriad _continuationTriad;
 
 
-  internal TaskAwaiter(Task<T> task, bool continueOnCapturedContext = false)
+  internal TaskAwaiter(Task<T> task, bool continueOnCapturedContext = true)
   {
+    if (task == null)
+    {
+      throw new ArgumentNullException("task");
+    }
     _task = task;
     _continueOnCapturedContext = continueOnCapturedContext;
   }
@@ -282,6 +297,11 @@ public class TaskAwaiter<T> : ICriticalNotifyCompletion
     {
       return _task.IsCompleted;
     }
+  }
+
+  public TaskAwaiter<T> GetAwaiter()
+  {
+    return this;
   }
 
   public void OnCompleted(Action continuation)

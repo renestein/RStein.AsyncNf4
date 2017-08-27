@@ -1,6 +1,6 @@
 ﻿namespace System.Runtime.CompilerServices
 {
-  internal interface INotifyCompletion
+  public interface INotifyCompletion
   {
     void OnCompleted(Action continuation);
   }

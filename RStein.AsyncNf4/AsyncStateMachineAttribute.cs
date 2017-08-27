@@ -1,8 +1,5 @@
-﻿using System;
-
-using System.Runtime.CompilerServices;
-
-namespace Common.Test.Tasks
+﻿
+namespace System.Runtime.CompilerServices
 {
 	[Serializable]
 	[AttributeUsageAttribute(AttributeTargets.Method, Inherited = false)]

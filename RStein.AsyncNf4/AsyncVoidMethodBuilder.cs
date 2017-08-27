@@ -2,7 +2,7 @@ using System.Threading;
 
 namespace System.Runtime.CompilerServices
 {
-  internal struct AsyncVoidMethodBuilder
+  public struct AsyncVoidMethodBuilder
   {
     public static AsyncVoidMethodBuilder Create()
     {

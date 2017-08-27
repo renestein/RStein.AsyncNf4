@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace System.Runtime.CompilerServices
 {
-  internal struct AsyncTaskMethodBuilder
+  public struct AsyncTaskMethodBuilder
   {
     private TaskCompletionSource<object> _tcs;
 
@@ -55,7 +55,7 @@ namespace System.Runtime.CompilerServices
     }
   }
 
-  internal struct AsyncTaskMethodBuilder<T>
+  public struct AsyncTaskMethodBuilder<T>
   {
     TaskCompletionSource<T> _tcs;
 

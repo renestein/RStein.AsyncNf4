@@ -1,6 +1,6 @@
 namespace System.Runtime.CompilerServices
 {
-  internal interface IAsyncStateMachine
+  public interface IAsyncStateMachine
   {
     void MoveNext();
     void SetStateMachine(IAsyncStateMachine stateMachine);
