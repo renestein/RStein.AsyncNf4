@@ -14,9 +14,6 @@ namespace RStein.AsyncNf4
     private static readonly MethodInfo _preserveStackMethod;
     private static readonly object[] NO_ARGS;
 
-    //No memory leak! see
-    //https://msdn.microsoft.com/en-us/library/dd287757(v=vs.110).aspx
-
     static TaskExtensions()
     {
       setUnobserverdHandler();
@@ -266,7 +263,7 @@ public class TaskAwaiter : ICriticalNotifyCompletion
     var currentScheduler = useSynchContext && SynchronizationContext.Current != null
       ? TaskScheduler.FromCurrentSynchronizationContext()
       : TaskScheduler.Default;
-                  
+
     task.ContinueWith(completedTask =>
     {
       continuation();
@@ -314,8 +311,8 @@ public class TaskAwaiter<T> : ICriticalNotifyCompletion
 
   public void OnCompleted(Action continuation)
   {
-     ContinuationTriad = TaskAwaiter.CaptureContext(continuation);
-     TaskAwaiter.OnCompletedCommon(_task, PreserveOldSyncContextContinuation, _continueOnCapturedContext);
+    ContinuationTriad = TaskAwaiter.CaptureContext(continuation);
+    TaskAwaiter.OnCompletedCommon(_task, PreserveOldSyncContextContinuation, _continueOnCapturedContext);
   }
 
   public void UnsafeOnCompleted(Action continuation)
