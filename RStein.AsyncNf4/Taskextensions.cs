@@ -19,9 +19,23 @@ namespace RStein.AsyncNf4
 
     static TaskExtensions()
     {
+      setUnobserverdHandler();
       _preserveStackMethod = TryGetExceptionPreserveStackMethodInfo();
       NO_ARGS = new object[0];
-      new ConditionalWeakTable<Task, ContextsContinuationTriad>();
+    }
+
+    private static void setUnobserverdHandler()
+    {
+      //dirty
+      TaskScheduler.UnobservedTaskException += (sender, ex) =>
+      {
+        if (!ex.Observed)
+        {
+          Debug.WriteLine(ex);
+        }
+
+        ex.SetObserved();
+      };
     }
 
     public static TaskAwaiter GetAwaiter(this Task task)
